@@ -1,4 +1,4 @@
-# AtliQ Hotels. Booking, Occupancy, and Revenue Analysis using Python
+# AtliQ Hotels - Booking, Occupancy, and Revenue Analysis using Python
 
 A Python-based exploratory data analysis project focused on validating hospitality booking data and understanding how demand, occupancy, revenue, and customer experience vary across cities, hotel types, room categories, and booking platforms.
 
