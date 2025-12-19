@@ -1,6 +1,6 @@
-# AtliQ Hotels – Exploratory Data Analysis (Python)
+# AtliQ Hotels – Booking, Occupancy, and Revenue Analysis using Python
 
-A Python-based exploratory data analysis project focused on validating hospitality booking data and uncovering occupancy and revenue patterns across cities and room categories.
+A Python-based exploratory data analysis (EDA) project focused on validating hospitality booking data and uncovering occupancy and revenue patterns across cities and room categories.
 
 ---
 
