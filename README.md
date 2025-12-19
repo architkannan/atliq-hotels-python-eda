@@ -1,18 +1,19 @@
-# AtliQ Hotels – Booking, Occupancy, and Revenue Analysis using Python
+# AtliQ Hotels. Booking, Occupancy, and Revenue Analysis using Python
 
-A Python-based exploratory data analysis (EDA) project focused on validating hospitality booking data and uncovering occupancy and revenue patterns across cities and room categories.
+A Python-based exploratory data analysis project focused on validating hospitality booking data and understanding how demand, occupancy, revenue, and customer experience vary across cities, hotel types, room categories, and booking platforms.
 
 ---
 
 ## ❗ Business Problem
 
-AtliQ Hotels operates across multiple cities, offering diverse room categories and experiencing fluctuating demand patterns.
+AtliQ Hotels operates across multiple cities, offering both Luxury and Business hotels with varied room categories and demand patterns.
 
-Before advanced dashboards or predictive models could be built, the leadership team needed clarity on:
+Before investing in dashboards or predictive models, leadership needed clarity on:
 - Whether booking and revenue data could be trusted
-- Which room categories actually drive occupancy
-- How occupancy and revenue vary by city
-- Whether extreme revenue values reflected business reality or data issues
+- How demand is distributed across booking platforms
+- Whether occupancy performance differs meaningfully by room type and city
+- What actually drives revenue. Utilization or pricing
+- Whether observed patterns are stable across time
 
 The primary challenge was **data reliability and insight extraction**, not prediction.
 
@@ -21,8 +22,8 @@ The primary challenge was **data reliability and insight extraction**, not predi
 ## 💡 How to Explore this Project
 
 - Review the Jupyter Notebook sequentially to follow the analytical flow  
-- Key insights are supported directly by code outputs and summary statistics  
-- Data cleaning and validation steps are explained inline before analysis  
+- All insights are supported directly by computed values in the notebook  
+- Data cleaning and validation steps precede any interpretation  
 - The notebook is intended for **reading and understanding**, not deployment  
 
 ---
@@ -31,12 +32,13 @@ The primary challenge was **data reliability and insight extraction**, not predi
 
 This project performs a structured exploratory analysis to:
 - Validate raw booking, revenue, and occupancy data
-- Detect and correct data quality issues
-- Analyze occupancy and revenue behavior by room category and city
-- Integrate updated data to test the scalability of the analysis
+- Identify structural patterns in demand and utilization
+- Compare occupancy, revenue, and ratings across cities
+- Understand the role of booking platforms in volume and revenue
+- Check whether insights hold consistently across months
 
 **Goal:**  
-Establish a clean and trustworthy analytical foundation to extract first-order business insights.
+Establish a clean, trustworthy analytical foundation and extract first-order business insights grounded in real operating data.
 
 ---
 
@@ -44,13 +46,13 @@ Establish a clean and trustworthy analytical foundation to extract first-order b
 
 The analysis uses five core datasets:
 
-- **fact_bookings** – Booking-level data including guests, revenue, ratings, and stay details  
-- **fact_aggregated_bookings** – Aggregated occupancy metrics by room and date  
-- **dim_hotels** – Hotel and city metadata  
-- **dim_rooms** – Room category and class definitions  
-- **dim_date** – Calendar mapping for time-based analysis  
+- **fact_bookings**. Booking-level data including revenue, ratings, booking platform, and stay details  
+- **fact_aggregated_bookings**. Aggregated occupancy metrics by room and date  
+- **dim_hotels**. Hotel category and city metadata  
+- **dim_rooms**. Room category definitions  
+- **dim_date**. Calendar mapping for time-based analysis  
 
-An additional **August data refresh** was appended to validate data consistency and scalability.
+The data covers hotel check-ins from **May 1, 2022 to July 31, 2022**.
 
 ---
 
@@ -68,56 +70,155 @@ An additional **August data refresh** was appended to validate data consistency 
 Key validation and cleaning steps included:
 
 ### 1. Structural Data Checks
-- Identified and removed records with invalid guest counts (negative values)
-- Verified missing ratings as expected behavior rather than data corruption
+- Removed records with invalid guest counts
+- Verified missing ratings as expected behavior rather than corruption
 
 ### 2. Revenue Outlier Treatment
-- Detected extreme revenue values using statistical thresholds
-- Removed records exceeding three standard deviations from the mean
-- Validated remaining high-revenue records against premium room categories
+- Identified extreme revenue values using statistical thresholds
+- Removed records beyond three standard deviations
+- Verified that remaining high values aligned with premium room categories
 
 ### 3. Capacity Consistency Fixes
-- Identified inconsistent capacity values in aggregated booking data
-- Replaced anomalies using median capacity values by room category
+- Detected inconsistent capacity values in aggregated data
+- Replaced anomalies using median capacity by room category
 
-This ensured analytical accuracy without distorting underlying business patterns.
+This ensured analytical accuracy without distorting underlying business behavior.
 
 ---
 
-## 📊 Key Insights
+## 📊 Key Insights. What the Data Is Really Saying
 
-- **Occupancy varies significantly by room category**, indicating uneven demand across inventory types  
-- **Revenue concentration is business-driven**, with higher values aligning to premium room classes rather than data errors  
-- **City-level occupancy differences are material**, suggesting localized demand dynamics  
-- **August data integrates cleanly**, confirming that the cleaned data structure scales with new inputs  
+### 1. Demand is heavily platform-led rather than brand-led  
+Between May and July, booking volume is dominated by third-party platforms:
+
+- **Others** - 55,066 bookings  
+- **MakeYourTrip** - 26,898 bookings  
+- **LogTrip** - 14,756 bookings  
+
+In contrast, **direct online and offline bookings combined account for ~20,000 bookings**.
+
+This indicates that AtliQ’s demand engine is largely **intermediated**, limiting direct customer ownership and pricing control.
+
+---
+
+### 2. Room category occupancy is stable, not polarized  
+Average occupancy across room categories is tightly clustered:
+
+- Presidential - **59.30%**  
+- Standard - **58.22%**  
+- Elite - **58.04%**  
+- Premium - **58.03%**
+
+Despite differences in pricing and positioning, utilization remains nearly flat. This suggests that **pricing and mix**, rather than availability, are doing most of the revenue work.
+
+---
+
+### 3. Weekends drive performance. Weekdays underutilize capacity  
+Occupancy splits sharply by day type:
+
+- **Weekends** - **74.23%**  
+- **Weekdays** - **51.82%**
+
+A gap of over **22 percentage points** shows that demand is strongly leisure-driven. Core weekday capacity remains underutilized, especially relevant for Business-category hotels.
+
+---
+
+### 4. Delhi fills rooms better. Mumbai monetizes them better  
+Average occupancy by city:
+
+- Delhi - **61.61%**  
+- Hyderabad - **58.14%**  
+- Mumbai - **57.94%**  
+- Bangalore - **56.59%**
+
+Revenue tells a different story:
+
+- Mumbai - **₹668.6M**  
+- Bangalore - **₹420.4M**  
+- Hyderabad - **₹325.2M**  
+- Delhi - **₹294.4M**
+
+Delhi leads on utilization, but Mumbai generates more than **2× Delhi’s revenue**, indicating stronger pricing power and revenue mix.
+
+---
+
+### 5. City-level differences persist within the same month  
+June-only occupancy confirms these patterns are stable:
+
+- Delhi - **61.46%**  
+- Mumbai - **57.79%**  
+- Hyderabad - **57.69%**  
+- Bangalore - **55.95%**
+
+This rules out seasonality noise and supports **city-specific strategy**, not a single national lever.
+
+---
+
+### 6. Luxury hotels generate disproportionate revenue  
+Hotel portfolio composition:
+
+- Luxury hotels - **16**  
+- Business hotels - **9**
+
+Revenue by hotel type:
+
+- Luxury - **₹1,052.6M**  
+- Business - **₹656.0M**
+
+Despite similar occupancy behavior, Luxury hotels generate **~60% more revenue**, confirming that monetization, not utilization, is the primary driver.
+
+---
+
+### 7. Customer experience varies meaningfully by city  
+Average ratings by city:
+
+- Delhi - **3.78**  
+- Hyderabad - **3.66**  
+- Mumbai - **3.65**  
+- Bangalore - **3.41**
+
+Bangalore ranks lowest on both **ratings and occupancy**, suggesting experience quality may be constraining demand.
+
+---
+
+### 8. Revenue concentration mirrors booking concentration across platforms  
+Revenue by booking platform closely follows volume patterns:
+
+- Others - **₹699.3M**  
+- MakeYourTrip - **₹340.8M**  
+- LogTrip - **₹187.5M**  
+- Direct online + offline - **~₹255.3M**
+
+This reinforces platform dependency as a structural risk.
 
 ---
 
 ## 🧠 What This Project Demonstrates
 
-- Strong data validation before analysis
-- Practical use of statistics for anomaly detection
-- Business-context-driven cleaning decisions
-- Ability to prepare reliable datasets for downstream BI or modeling work
+- Translating raw booking data into business diagnosis
+- Using numbers to separate utilization issues from pricing effects
+- Identifying platform dependency risks using volume and revenue data
+- Framing city-level performance differences with evidence
+- Building trust in insights through disciplined validation
 
 ---
 
 ## ⚠️ Scope & Limitations
 
-- No forecasting or predictive modeling
-- No customer segmentation or pricing elasticity analysis
-- No external seasonality or competitor data
+- No forecasting or causal modeling
+- No customer segmentation or price elasticity analysis
+- No external demand or competitor data
 
-These were intentional exclusions to maintain focus on data quality and exploratory insights.
+These were deliberate exclusions to focus on diagnostic clarity.
 
 ---
 
 ## 🚀 Potential Extensions
 
-- Time-series analysis of occupancy trends
-- Revenue per Available Room (RevPAR) analysis
-- City and room-category interaction analysis
-- Power BI or Streamlit dashboards built on the cleaned dataset
+- Weekday-focused demand stimulation analysis
+- RevPAR and contribution margin analysis
+- Platform-level commission impact modeling
+- Power BI or Streamlit dashboards built on cleaned data
 
 ---
 
@@ -125,7 +226,7 @@ These were intentional exclusions to maintain focus on data quality and explorat
 
 - Cleaned and validated datasets
 - Python EDA notebook with documented logic
-- Business-ready insights on occupancy and revenue structure
+- Insight-driven diagnosis of demand, utilization, and revenue structure
 
 ---
 
@@ -133,10 +234,10 @@ These were intentional exclusions to maintain focus on data quality and explorat
 
 This project demonstrates my ability to:
 
-1. Validate and clean raw operational data to ensure analytical reliability  
-2. Use exploratory analysis to uncover occupancy and revenue patterns across cities and room categories  
-3. Apply statistical reasoning to distinguish genuine business signals from data anomalies  
-4. Prepare a trustworthy data foundation suitable for downstream BI, reporting, or modeling work  
+1. Validate and clean raw hospitality data to ensure analytical reliability  
+2. Use exploratory analysis to diagnose demand, utilization, and monetization patterns  
+3. Ground business insights in clearly computed metrics rather than assumptions  
+4. Build a trustworthy foundation for downstream BI, reporting, or strategy work  
 
 ---
 
