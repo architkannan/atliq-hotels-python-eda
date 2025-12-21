@@ -86,7 +86,7 @@ This ensured analytical accuracy without distorting underlying business behavior
 
 ---
 
-## 📊 Key Insights. What the Data Is Really Saying
+## 📊 Key Insights - What's the data trying to tell?
 
 ### 1. Demand is heavily platform-led rather than brand-led  
 Between May and July, booking volume is dominated by third-party platforms:
